@@ -1,8 +1,10 @@
 const math = require('remark-math')
 const katex = require('rehype-katex')
+const tailwindPlugin = require('./plugins/tailwind-config.cjs')
 require('dotenv').config()
 
 module.exports = {
+  staticDirectories: ['static'],
   customFields: {
     // Analytics proxy URL
     analyticsProxyUrl: process.env.REACT_APP_AMPLITUDE_PROXY_URL,
@@ -26,166 +28,24 @@ module.exports = {
       additionalLanguages: ['solidity'],
     },
     algolia: {
-      apiKey: '32465e2ab6f7554ff014e64c0d92171c',
+      apiKey: '32465e2ab6f7554ff014e64c0d92171c', //  Search-Only API Key (Public & safe to commit)
       indexName: 'v3-docs',
       appId: 'S0IDD0YGLZ',
     },
-    navbar: {
-      title: 'Uniswap Docs',
-      logo: {
-        alt: 'Uniswap Unicorn',
-        src: 'img/uni_dark_icon.svg',
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
       },
-      items: [
-        {
-          to: '/concepts/overview',
-          label: 'Concepts',
-          position: 'left',
-          className: 'V3_active',
-        },
-        {
-          to: '/contracts/v4/overview',
-          label: 'Contracts',
-          position: 'left',
-          className: 'V3_active',
-        },
-        {
-          to: '/sdk/v4/overview',
-          label: 'SDKs',
-          position: 'left',
-          className: 'V3_active',
-        },
-        {
-          to: '/api/subgraph/overview',
-          label: 'APIs',
-          position: 'left',
-          className: 'V3_active',
-        },
-        {
-          label: 'Give Feedback',
-          to: 'https://forms.gle/13XtjmkwdXQ2jMn26',
-          position: 'right',
-          className: 'persistent',
-        },
-        {
-          label: 'Uniswap Foundation',
-          to: 'https://www.uniswapfoundation.org/',
-          position: 'right',
-          className: 'persistent',
-        },
-        
-        {
-          to: 'https://app.uniswap.org/whitepaper-v4.pdf',
-          label: 'Whitepaper',
-          position: 'right',
-          className: 'persistent',
-        },
-        {
-          label: 'GitHub',
-          to: 'https://github.com/Uniswap/docs/',
-          position: 'right',
-          className: 'persistent',
-        },
-      ],
+    },
+    navbar: {
+      /* using custom navigation */
     },
     footer: {
-      // style: "dark",
-      links: [
-        {
-          title: 'Developers',
-          items: [
-            {
-              label: 'Dev Chat',
-              href: 'https://discord.com/invite/uniswap',
-            },
-            {
-              label: 'Feedback',
-              href: 'https://forms.gle/13XtjmkwdXQ2jMn26',
-            },
-            {
-              label: 'Bug Bounty',
-              href: 'https://blog.uniswap.org/v4-bug-bounty',
-            },
-            {
-              label: 'Whitepaper',
-              href: 'https://app.uniswap.org/whitepaper-v4.pdf',
-            },
-          ],
-        },
-        {
-          title: 'Github',
-          items: [
-            {
-              label: 'uniswap-v4-core',
-              href: 'https://github.com/Uniswap/v4-core',
-            },
-            {
-              label: 'uniswap-v4-sdk',
-              href: 'https://github.com/Uniswap/sdks/tree/main/sdks/v4-sdk',
-            },
-            {
-              label: 'uniswap-v4-periphery',
-              href: 'https://github.com/Uniswap/v4-periphery',
-            },
-            {
-              label: 'Deployment addresses',
-              href: 'https://docs.uniswap.org/contracts/v4/deployments',
-            },
-          ],
-        },
-        {
-          title: 'Ecosystem',
-          items: [
-            {
-              label: 'App',
-              href: 'https://app.uniswap.org/',
-            },
-            {
-              label: 'Analytics',
-              href: 'https://info.uniswap.org/home',
-            },
-            {
-              label: 'Token Lists',
-              href: 'https://tokenlists.org/',
-            },
-            {
-              label: 'Brand Assets',
-              href: 'https://github.com/Uniswap/brand-assets/raw/main/Uniswap%20Brand%20Assets.zip',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Blog',
-              href: 'https://blog.uniswap.org/',
-            },
-            {
-              label: 'Governance',
-              href: 'https://gov.uniswap.org/',
-            },
-            {
-              label: 'Uniswap Labs Twitter',
-              href: 'https://twitter.com/Uniswap',
-            },
-            {
-              label: 'Uniswap Foundation Twitter',
-              href: 'https://x.com/UniswapFND',
-            },
-          ],
-        },
-      ],
-      // copyright: `unlicensed`,
+      /* using custom footer */
     },
     colorMode: {
       // "light" | "dark"
       defaultMode: 'dark',
-
-      // Hides the switch in the navbar
-      // Useful if you want to support a single color mode
-      disableSwitch: false,
-
       // Should we use the prefers-color-scheme media-query,
       // using user system preferences, instead of the hardcoded defaultMode
       respectPrefersColorScheme: true,
@@ -211,11 +71,12 @@ module.exports = {
           blogSidebarCount: 0,
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: [require.resolve('./src/css/custom.css')],
         },
       },
     ],
   ],
+
   stylesheets: [
     {
       href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
@@ -225,6 +86,7 @@ module.exports = {
     },
   ],
   plugins: [
+    tailwindPlugin,
     ['@saucelabs/theme-github-codeblock', {}],
     [
       '@docusaurus/plugin-client-redirects',
